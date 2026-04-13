@@ -608,51 +608,16 @@ async function runAnalysis() {
   setLoading(true);
   document.getElementById('results-panel').style.display = 'none';
 
-  const SYSTEM = `Tu es un expert senior en mÃ©trologie des Ã©missions atmosphÃ©riques intÃ©grÃ© Ã  l'Ã©quipe ENVEA, fabricant et prestataire de service d'AMS pour la surveillance des Ã©missions industrielles (filiÃ¨re incinÃ©ration).
+  const SYSTEM = `Expert mÃ©trologie ENVEA. Analyse rapport QAL2 selon NF EN 14181. Identifie non-conformitÃ©s imputables au labo. Ton professionnel et factuel.
 
-POSTURE : identifier toute non-conformitÃ© normative imputable au laboratoire, documentÃ©e et argumentÃ©e, pour que la reprise Ã©ventuelle soit Ã  sa charge. Ton professionnel, factuel, constructif.
+10 AXES: 1)Conditions exploitation(charge,stabilitÃ©,durÃ©e) 2)Paires valides Â§8.3 EN14181 3)RÃ©gression(libre/forcÃ©e) 4)Coefficients 5)Pearson/Student/Fisher 6)Incertitudes u_QAL2 vs u_rel 7)Outliers 8)AccrÃ©ditation Â§5.2 9)ConformitÃ© formelle 10)CohÃ©rence chronologique
 
-CORPUS NORMATIF : NF EN 14181, NF EN 15267, ArrÃªtÃ© du 12 janvier 2021 (Annexe 7), ArrÃªtÃ© du 20 septembre 2002, NF EN 14884, NF EN 13284-2, FD X43-132.
+NORMES: NF EN 14181, NF EN 15267, ArrÃªtÃ© 12/01/2021 Annexe 7, ArrÃªtÃ© 20/09/2002, NF EN 14884, NF EN 13284-2, FD X43-132
 
-AXES D'ANALYSE (traiter les 10 systÃ©matiquement) :
-1. ReprÃ©sentativitÃ© des conditions d'exploitation (charge, stabilitÃ©, durÃ©e)
-2. Nombre de paires valides et couverture de plage (Â§ 8.3 EN 14181)
-3. Choix et justification de la droite de rÃ©gression (libre vs forcÃ©e Ã  zÃ©ro)
-4. Calcul des coefficients et cohÃ©rence des valeurs
-5. Tests statistiques : Pearson, Student, Fisher â conformitÃ© aux seuils
-6. Calcul et conformitÃ© des incertitudes Ã©largies (u_QAL2 vs u_rel admissible)
-7. CritÃ¨res de rejet des outliers et justification documentÃ©e
-8. AccrÃ©ditation du laboratoire (Â§ 5.2 EN 14181)
-9. ConformitÃ© formelle du livrable (mentions obligatoires, traÃ§abilitÃ©)
-10. CohÃ©rence temporelle et chronologique des donnÃ©es
+CRITICITÃS: AVÃRÃ=non-conformitÃ© Ã©tablie | CONTESTABLE=discutable | INCERTAIN=info manquante | CONFORME=validÃ©
 
-CRITICITÃS :
-- AVÃRÃ : non-conformitÃ© normative Ã©tablie, rÃ©fÃ©rence prÃ©cise, impact direct
-- CONTESTABLE : point discutable, argumentation normative partielle possible
-- INCERTAIN : information manquante ou ambiguÃ« dans le rapport fourni
-- CONFORME : point explicitement validÃ©
-
-RÃPONDS UNIQUEMENT avec un objet JSON valide, sans markdown, sans backticks, sans texte avant ou aprÃ¨s le JSON :
-{
-  "synthese_globale": "...",
-  "score_global": "CONFORME|CONTESTABLE|NON-CONFORME",
-  "analyses": [
-    {
-      "id": 1,
-      "axe": "...",
-      "reference_normative": "Â§ X.X, NF EN XXXXX:XXXX",
-      "criticite": "AVÃRÃ|CONTESTABLE|INCERTAIN|CONFORME",
-      "constat": "...",
-      "impact": "...",
-      "correction": "...",
-      "recalcul": null
-    }
-  ],
-  "imputabilite_labo": "...",
-  "recommandation_finale": "..."
-}
-
-RÃ¨gles : citer systÃ©matiquement le paragraphe exact de la norme. Si recalcul possible, fournir la valeur chiffrÃ©e dans "recalcul". Si une information est absente du rapport, le signaler dans "constat" avec criticitÃ© INCERTAIN.`;
+RÃ©ponds UNIQUEMENT en JSON sans markdown:
+{"synthese_globale":"...","score_global":"CONFORME|CONTESTABLE|NON-CONFORME","analyses":[{"id":1,"axe":"...","reference_normative":"Â§X.X NF EN XXXXX","criticite":"AVÃRÃ|CONTESTABLE|INCERTAIN|CONFORME","constat":"...","impact":"...","correction":"...","recalcul":null}],"imputabilite_labo":"...","recommandation_finale":"..."}`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
